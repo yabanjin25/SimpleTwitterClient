@@ -49,7 +49,9 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+I wasn't able to implement retweeting in time, but I saw that it is a little more complicated than I originally thought it would be due to the way retweets are handled. I also want to implement the caching for using twitter in offline mode, and do error handling, and allow the user to open tweets in a detailed view. I will have to do that in the next iteration.
+
+Also, you might be wondering why my entire commit history is missing. It is because during my walkthrough, I had typed in my password, which android showed letter-by-letter. I forgot this detail, and didn't see it until I watched the gif after I had pushed it to the main branch. In order to remove it from the history, I had to re-initialize the git repo, which wiped out the history.
 
 ## Open-source libraries used
 
