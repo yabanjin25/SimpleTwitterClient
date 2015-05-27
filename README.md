@@ -37,7 +37,7 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] User can favorite a tweet
+* [x] User can favorite a tweet
 
 ## Video Walkthrough 
 
