@@ -19,6 +19,8 @@
     <string name="tv_retweet_placeholder">Someone retweeted</string>
     <string name="retweet_count_placeholder">0</string>
     <string name="favorite_count_placeholder">0</string>
+    <string name="profile">Profile</string>
+    <string name="title_activity_profile">Profile</string>
 
 
 </resources>

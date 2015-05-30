@@ -2,6 +2,7 @@ package com.codepath.apps.mysimpletweets;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.ActionBarActivity;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.activities.ComposeActivity;
-import com.codepath.apps.mysimpletweets.activities.TimelineActivity;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
@@ -28,7 +28,7 @@ import java.util.List;
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
 
     private final int REQUEST_CODE = 25;
-    private TimelineActivity activity;
+    private ActionBarActivity activity;
     private TwitterClient client;
 
     private static class ViewHolder {
@@ -47,9 +47,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         LinearLayout llFavoriteViews;
     }
 
-    public TweetsArrayAdapter(Context context, TimelineActivity activity, List<Tweet> tweets) {
+    public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
         super(context, android.R.layout.simple_list_item_1, tweets);
-        this.activity = activity;
+        this.activity = (ActionBarActivity) context;
         this.client = TwitterApplication.getRestClient();
     }
 
@@ -65,7 +65,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
 
-            viewHolder.ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+            viewHolder.ivProfileImage = (ImageView) convertView.findViewById(R.id.ivUserProfileImage);
             viewHolder.tvFullName = (TextView) convertView.findViewById(R.id.tvFullName);
             viewHolder.tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
             viewHolder.tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);

@@ -60,6 +60,14 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, params, handler);
     }
 
+    public void getMentionsTimeline(AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 100);
+        params.put("since_id", 1);
+        getClient().get(apiUrl, params, handler);
+    }
+
     public void tweet(String tweetMessage)
     {
         tweet(tweetMessage, 0);
@@ -92,11 +100,68 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     // LoadMoreHomeTimeLineTweets
-    public void loadMoreTweets(long idOfOldestTweet)
+    public void loadMoreHomeTimelineTweets(long idOfOldestTweet)
     {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         RequestParams params = new RequestParams();
         params.put("count", 100);
+        params.put("max_id", (idOfOldestTweet - 1));
+        Log.d("DEBUG", apiUrl);
+        Log.d("DEBUG", params.toString());
+        getClient().get(apiUrl, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                Log.d("DEBUG", statusCode + "");
+                Log.d("DEBUG", json.toString());
+                ArrayList<Tweet> resultTweets = new ArrayList<Tweet>();
+                resultTweets.addAll(Tweet.fromJSONArray(json));
+
+                if (listener != null) {
+                    listener.onLoadMoreTweets(resultTweets); // <---- fire listener here
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+            }
+        });
+    }
+
+    public void loadMoreMentionsTimelineTweets(long idOfOldestTweet)
+    {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 100);
+        params.put("max_id", (idOfOldestTweet - 1));
+        Log.d("DEBUG", apiUrl);
+        Log.d("DEBUG", params.toString());
+        getClient().get(apiUrl, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                Log.d("DEBUG", statusCode + "");
+                Log.d("DEBUG", json.toString());
+                ArrayList<Tweet> resultTweets = new ArrayList<Tweet>();
+                resultTweets.addAll(Tweet.fromJSONArray(json));
+
+                if (listener != null) {
+                    listener.onLoadMoreTweets(resultTweets); // <---- fire listener here
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+            }
+        });
+    }
+
+    public void loadMoreUserTimelineTweets(String screenName, long idOfOldestTweet)
+    {
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 100);
+        params.put("screen_name", screenName);
         params.put("max_id", (idOfOldestTweet - 1));
         Log.d("DEBUG", apiUrl);
         Log.d("DEBUG", params.toString());
@@ -142,6 +207,22 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().post(apiUrl, params, handler);
     }
 
+    public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler)
+    {
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 100);
+        params.put("since_id", 1);
+        params.put("screen_name", screenName);
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getUserInfo(AsyncHttpResponseHandler handler)
+    {
+        String apiUrl = getApiUrl("account/verify_credentials.json");
+        getClient().get(apiUrl, null, handler);
+    }
+
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
@@ -151,4 +232,5 @@ public class TwitterClient extends OAuthBaseClient {
 	 *    i.e client.get(apiUrl, params, handler);
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
+
 }
