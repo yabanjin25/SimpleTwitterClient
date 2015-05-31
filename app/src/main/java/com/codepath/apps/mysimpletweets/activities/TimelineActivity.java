@@ -1,12 +1,14 @@
 package com.codepath.apps.mysimpletweets.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -30,6 +32,11 @@ public class TimelineActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
+        // Set a Toolbar to replace the ActionBar.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+
         client = TwitterApplication.getRestClient();    //singleton client
 
         // Get the ViewPager
@@ -38,6 +45,8 @@ public class TimelineActivity extends ActionBarActivity {
         vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
         // Find the sliding tabstrip
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabStrip.setTextColor(Color.parseColor("#55ACEE"));
+        tabStrip.setBackgroundColor(Color.WHITE);
         // Attach the tabstrip to the viewpager
         tabStrip.setViewPager(vpPager);
     }
