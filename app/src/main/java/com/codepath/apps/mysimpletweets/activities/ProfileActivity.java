@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -18,31 +19,71 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ProfileActivity extends ActionBarActivity {
 
     TwitterClient client;
     User user;
+    Bundle savedInstanceState;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        this.savedInstanceState = savedInstanceState;
         client = TwitterApplication.getRestClient();
-        client.getUserInfo(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                user = User.fromJSON(response);
-                // my current user's account info
-                getSupportActionBar().setTitle("@" + user.getUsername());
-                populateProfileHeader(user);
-            }
-        });
 
-        // Get the screenname from the activity that launches this
-        String screenName = getIntent().getStringExtra("screen_name");
+        if (getIntent().hasExtra("screen_name")) {
+            // Get the screenname from the activity that launches this
+            String screenName = getIntent().getStringExtra("screen_name");
+
+            client.getUserInfo(screenName, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    Log.d("DEBUGGGGGGG", "Made it to onSuccess! WWWWEEEEEEEEEEEE");
+                    try {
+                        user = User.fromJSON(response.getJSONObject(0));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    // my current user's account info
+                    getSupportActionBar().setTitle("@" + user.getUsername());
+                    populateProfileHeader(user);
+                    createTimelineFragment(user.getUsername());
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("DEBUGGGGGGG", "Made it to onFailure! WWWWEEEEEEEEEEEE");
+                    Log.d("DEBUG", errorResponse.toString());
+                }
+            });
+        } else {
+            client.getPrimaryUserInfo(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d("DEBUGGGGGGG", "Made it to onSuccess! WWWWEEEEEEEEEEEE");
+                    user = User.fromJSON(response);
+                    // my current user's account info
+                    getSupportActionBar().setTitle("@" + user.getUsername());
+                    populateProfileHeader(user);
+                    createTimelineFragment(user.getUsername());
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("DEBUGGGGGGG", "Made it to onFailure! WWWWEEEEEEEEEEEE");
+                    Log.d("DEBUG", errorResponse.toString());
+                }
+            });
+        }
+    }
+
+    private void createTimelineFragment(String screenName) {
         // Create the usertimeline fragment
         if (savedInstanceState == null) {
             UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(screenName);

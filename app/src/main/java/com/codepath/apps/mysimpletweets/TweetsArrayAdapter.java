@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.activities.ComposeActivity;
+import com.codepath.apps.mysimpletweets.activities.ProfileActivity;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
@@ -109,6 +110,15 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         viewHolder.tvFavoriteCount.setText(tweetToInflate.getFavoriteCount() + "");
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweetToInflate.getUser().getProfileImageUrl()).into(viewHolder.ivProfileImage);
+        viewHolder.ivProfileImage.setClickable(true);
+        viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ProfileActivity.class);
+                i.putExtra("screen_name", tweetToInflate.getUser().getUsername());
+                getContext().startActivity(i);
+            }
+        });
 
         if (tweetToInflate.getMedias().size() > 0 && tweetToInflate.getMedias().get(0).getType().equals("photo")) {
             viewHolder.ivMedia.setVisibility(View.VISIBLE);

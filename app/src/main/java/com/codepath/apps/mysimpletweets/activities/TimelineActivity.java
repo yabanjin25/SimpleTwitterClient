@@ -96,7 +96,6 @@ public class TimelineActivity extends ActionBarActivity {
 
     public void onProfileView(MenuItem mi) {
         Intent i = new Intent(this, ProfileActivity.class);
-        i.putExtra("screen_name", "TickleYamanaka");
         startActivity(i);
     }
 
