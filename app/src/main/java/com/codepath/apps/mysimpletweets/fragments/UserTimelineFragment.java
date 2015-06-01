@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.EndlessScrollListener;
 import com.codepath.apps.mysimpletweets.R;
-import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -24,18 +23,15 @@ import java.util.ArrayList;
 
 public class UserTimelineFragment extends TweetsListFragment{
 
-    TwitterClient client;
     private SwipeRefreshLayout swipeContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        client = TwitterApplication.getRestClient();    //singleton client
-        client.setTwitterClientListener(new TwitterClient.TwitterClientListener() {
+        client.setTwitterClientUserListener(new TwitterClient.TwitterClientUserListener() {
             @Override
             public void onRefreshTimeLine() {
-                Toast.makeText(getActivity(), "Tweet posted", Toast.LENGTH_SHORT).show();
                 populateTimeline();
             }
 

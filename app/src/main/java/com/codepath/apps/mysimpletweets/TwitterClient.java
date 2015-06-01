@@ -36,9 +36,21 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CONSUMER_SECRET = "yRFBiEcLQK9FsdXi4eXM3as02mtz3a98zII4zf1xQBfp7WRUZ1"; // Change this
 	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
-    private TwitterClientListener listener;
+    private TwitterClientHomeListener homeTimelineListener;
+    private TwitterClientMentionsListener mentionsTimelineListener;
+    private TwitterClientUserListener userTimelineListener;
 
-    public interface TwitterClientListener {
+    public interface TwitterClientHomeListener {
+        public void onRefreshTimeLine();
+        public void onLoadMoreTweets(ArrayList<Tweet> resultTweets);
+    }
+
+    public interface TwitterClientMentionsListener {
+        public void onRefreshTimeLine();
+        public void onLoadMoreTweets(ArrayList<Tweet> resultTweets);
+    }
+
+    public interface TwitterClientUserListener {
         public void onRefreshTimeLine();
         public void onLoadMoreTweets(ArrayList<Tweet> resultTweets);
     }
@@ -79,6 +91,7 @@ public class TwitterClient extends OAuthBaseClient {
         String apiUrl = getApiUrl("statuses/update.json");
         RequestParams params = new RequestParams();
         params.put("status", tweetMessage);
+        final long inReplyToStatusIdToPass = inReplyToStatusId;
 
         if (inReplyToStatusId != 0) {
             params.put("in_reply_to_status_id", inReplyToStatusId);
@@ -87,8 +100,12 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().post(apiUrl, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
-                if (listener != null) {
-                    listener.onRefreshTimeLine(); // <---- fire listener here
+                if (homeTimelineListener != null) {
+                    homeTimelineListener.onRefreshTimeLine(); // <---- fire listener here
+                }
+
+                if (inReplyToStatusIdToPass != 0 && mentionsTimelineListener != null) {
+                    mentionsTimelineListener.onRefreshTimeLine(); // <---- fire listener here
                 }
             }
 
@@ -116,8 +133,8 @@ public class TwitterClient extends OAuthBaseClient {
                 ArrayList<Tweet> resultTweets = new ArrayList<Tweet>();
                 resultTweets.addAll(Tweet.fromJSONArray(json));
 
-                if (listener != null) {
-                    listener.onLoadMoreTweets(resultTweets); // <---- fire listener here
+                if (homeTimelineListener != null) {
+                    homeTimelineListener.onLoadMoreTweets(resultTweets); // <---- fire listener here
                 }
             }
 
@@ -144,8 +161,8 @@ public class TwitterClient extends OAuthBaseClient {
                 ArrayList<Tweet> resultTweets = new ArrayList<Tweet>();
                 resultTweets.addAll(Tweet.fromJSONArray(json));
 
-                if (listener != null) {
-                    listener.onLoadMoreTweets(resultTweets); // <---- fire listener here
+                if (mentionsTimelineListener != null) {
+                    mentionsTimelineListener.onLoadMoreTweets(resultTweets); // <---- fire listener here
                 }
             }
 
@@ -173,8 +190,8 @@ public class TwitterClient extends OAuthBaseClient {
                 ArrayList<Tweet> resultTweets = new ArrayList<Tweet>();
                 resultTweets.addAll(Tweet.fromJSONArray(json));
 
-                if (listener != null) {
-                    listener.onLoadMoreTweets(resultTweets); // <---- fire listener here
+                if (userTimelineListener != null) {
+                    userTimelineListener.onLoadMoreTweets(resultTweets); // <---- fire listener here
                 }
             }
 
@@ -185,8 +202,16 @@ public class TwitterClient extends OAuthBaseClient {
         });
     }
 
-    public void setTwitterClientListener(TwitterClientListener listener) {
-        this.listener = listener;
+    public void setTwitterClientHomeListener(TwitterClientHomeListener listener) {
+        this.homeTimelineListener = listener;
+    }
+
+    public void setTwitterClientMentionsListener(TwitterClientMentionsListener listener) {
+        this.mentionsTimelineListener = listener;
+    }
+
+    public void setTwitterClientUserListener(TwitterClientUserListener listener) {
+        this.userTimelineListener = listener;
     }
 
     // Favoriting a Tweet

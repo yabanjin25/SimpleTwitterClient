@@ -10,6 +10,8 @@ import android.widget.ListView;
 
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TweetsArrayAdapter;
+import com.codepath.apps.mysimpletweets.TwitterApplication;
+import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class TweetsListFragment extends Fragment {
     protected ArrayList<Tweet> tweets;
     protected TweetsArrayAdapter aTweets;
     protected ListView lvTweets;
+    TwitterClient client;
 
     public long idOfOldestTweetResult;
 
@@ -41,5 +44,6 @@ public class TweetsListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         tweets = new ArrayList<>();
         aTweets = new TweetsArrayAdapter(getActivity(), tweets);
+        client = TwitterApplication.getRestClient();
     }
 }

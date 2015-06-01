@@ -1,6 +1,5 @@
 package com.codepath.apps.mysimpletweets.activities;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.TwitterApplication;
+import com.codepath.apps.mysimpletweets.TwitterClient;
 
 public class ComposeActivity extends ActionBarActivity {
 
@@ -23,6 +24,7 @@ public class ComposeActivity extends ActionBarActivity {
     TextView tvCharCount;
     String usernameToReplyTo;
     long inReplyToStatusId;
+    TwitterClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class ComposeActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
+
+        client = TwitterApplication.getRestClient();
 
         if (getIntent().hasExtra("replyToUsername")) {
             usernameToReplyTo = getIntent().getStringExtra("replyToUsername");
@@ -124,12 +128,7 @@ public class ComposeActivity extends ActionBarActivity {
     }
 
     public void onTweet(View v) {
-        Intent data = new Intent();
-        // Pass relevant data back as a result
-        data.putExtra("tweetMessage", etCompose.getText().toString());
-        data.putExtra("inReplyToStatusId", inReplyToStatusId);
-        // Activity finished ok, return the data
-        setResult(RESULT_OK, data);
+        client.tweet(etCompose.getText().toString(), inReplyToStatusId);
         finish();
     }
 }

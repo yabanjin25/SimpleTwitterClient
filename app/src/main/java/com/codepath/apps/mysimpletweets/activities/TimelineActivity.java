@@ -75,32 +75,32 @@ public class TimelineActivity extends ActionBarActivity {
     }
 
     // Send an API request to tweet a new message
-    private void tweet(String tweetMessage) {
-        client.tweet(tweetMessage);
-    }
-
-    // Send an API request to tweet a new message
-    private void tweet(String tweetMessage, long inReplyToStatusId) {
-        client.tweet(tweetMessage, inReplyToStatusId);
-    }
+//    private void tweet(String tweetMessage) {
+//        client.tweet(tweetMessage);
+//    }
+//
+//    // Send an API request to tweet a new message
+//    private void tweet(String tweetMessage, long inReplyToStatusId) {
+//        client.tweet(tweetMessage, inReplyToStatusId);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == COMPOSE_REQUEST_CODE) {
-            // Extract name value from result extras
-            String newTweetMessage = data.getExtras().getString("tweetMessage");
-            //int code = data.getExtras().getInt("code", 0);
-            tweet(newTweetMessage);
-        }
-
-        // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == COMPOSE_REPLY_REQUEST_CODE) {
-            // Extract name value from result extras
-            String newTweetMessage = data.getExtras().getString("tweetMessage");
-            long inReplyToStatusId = data.getExtras().getLong("inReplyToStatusId", 0);
-            tweet(newTweetMessage, inReplyToStatusId);
-        }
+//        // REQUEST_CODE is defined above
+//        if (resultCode == RESULT_OK && requestCode == COMPOSE_REQUEST_CODE) {
+//            // Extract name value from result extras
+//            String newTweetMessage = data.getExtras().getString("tweetMessage");
+//            //int code = data.getExtras().getInt("code", 0);
+//            tweet(newTweetMessage);
+//        }
+//
+//        // REQUEST_CODE is defined above
+//        if (resultCode == RESULT_OK && requestCode == COMPOSE_REPLY_REQUEST_CODE) {
+//            // Extract name value from result extras
+//            String newTweetMessage = data.getExtras().getString("tweetMessage");
+//            long inReplyToStatusId = data.getExtras().getLong("inReplyToStatusId", 0);
+//            tweet(newTweetMessage, inReplyToStatusId);
+//        }
     }
 
     public void onProfileView(MenuItem mi) {
