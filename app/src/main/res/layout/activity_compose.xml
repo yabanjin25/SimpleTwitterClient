@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.codepath.apps.mysimpletweets.activities.ComposeActivity" >
+    tools:context="com.codepath.apps.mysimpletweets.activities.ComposeActivity"
+    android:background="@android:color/white">
 
     <include
         layout="@layout/toolbar"
@@ -15,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.codepath.apps.mysimpletweets.activities.ComposeActivity"
-        android:padding="16dp" >
+        android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
