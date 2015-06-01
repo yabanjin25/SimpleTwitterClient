@@ -21,6 +21,7 @@
     <string name="favorite_count_placeholder">0</string>
     <string name="profile">Profile</string>
     <string name="title_activity_profile">Profile</string>
+    <string name="about_twitter_text">Twitter helps you create and share ideas and information instantly, without barriers</string>
 
 
 </resources>

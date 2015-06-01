@@ -1,13 +1,18 @@
 package com.codepath.apps.mysimpletweets.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
+import com.squareup.picasso.Picasso;
 
 // Where the user will sign in
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
@@ -16,6 +21,20 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+
+        // Set a Toolbar to replace the ActionBar.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Login");
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setLogo(R.drawable.ic_twitter_icon);
+        setSupportActionBar(toolbar);
+
+        ImageView ivAboutBackground = (ImageView) findViewById(R.id.ivAboutBackground);
+        Drawable aboutBackground = getResources().getDrawable(R.drawable.community);
+        // setting the opacity (alpha)
+        aboutBackground.setAlpha(20);
+        // setting the images on the ImageViews
+        Picasso.with(this).load(String.valueOf(aboutBackground)).into(ivAboutBackground);
 	}
 
 
