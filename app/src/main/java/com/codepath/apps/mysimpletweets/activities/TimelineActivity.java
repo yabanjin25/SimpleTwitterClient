@@ -34,7 +34,8 @@ public class TimelineActivity extends ActionBarActivity {
 
         // Set a Toolbar to replace the ActionBar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle("");
+        toolbar.setLogo(R.drawable.ic_twitter_icon);
         setSupportActionBar(toolbar);
 
         client = TwitterApplication.getRestClient();    //singleton client

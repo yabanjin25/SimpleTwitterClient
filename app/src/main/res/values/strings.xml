@@ -10,7 +10,7 @@
     <string name="tweet_body">Tweet Text Body</string>
     <string name="username">\@username</string>
     <string name="created_time">Time</string>
-    <string name="title_activity_compose">Compose A Tweet</string>
+    <string name="title_activity_compose">Compose</string>
     <string name="compose_hint">What\'s happening?</string>
     <string name="action_tweet">Tweet</string>
     <string name="char_counter">140 characters left</string>
